@@ -28,10 +28,136 @@
     <!--对于WebLogic,Oriom,OC4J此属性应该设置为true-->
     <constant name="struts.dispatcher.parametersWorkaround" value="false"/>
     <!--处理URL的转发-->
-    <package name="user" extends="struts-default" namespace="/">
-        <action name="user_*" class="userAction" method="login">
-            <result name="success">/index.jsp</result>
-            <result name="error">/login.jsp</result>
+    <!--<package name="user" extends="struts-default" namespace="/">-->
+        <!--<action name="user_*" class="userAction" method="login">-->
+            <!--<result name="success">/admin-index.jsp</result>-->
+            <!--<result name="error">/user-login.jsp</result>-->
+        <!--</action>-->
+        <!--<action name="users_*" class="userAction" method="list">-->
+            <!--<result name="error">/WEB-INF/view/user/user-list.jsp</result>-->
+            <!--<result name="success">/WEB-INF/view/user/user-list.jsp</result>-->
+        <!--</action>-->
+        <!--<action name="Login_login" class="loginAction" method="login">-->
+            <!--<result name="error">/loginerror.jsp</result>-->
+            <!--<result name="success">/WEB-INF/view/out/main.jsp</result>-->
+        <!--</action>-->
+        <!--<action name="Login_openTop" class="loginAction" method="openTop">-->
+            <!--<result name="success">/WEB-INF/view/out/top.jsp</result>-->
+        <!--</action>-->
+        <!--<action name="Login_openLeft" class="loginAction" method="openLeft">-->
+            <!--<result name="success">/WEB-INF/view/out/left.jsp</result>-->
+        <!--</action>-->
+        <!--<action name="Login_openIndex" class="loginAction" method="openIndex">-->
+            <!--<result name="success">/WEB-INF/view/out/index.jsp</result>-->
+        <!--</action>-->
+    <!--</package>-->
+
+    <package name="user" namespace="/user" extends="struts-default">
+        <action name="User_*" class="loginAction" method="webLogin">
+            <result name="success">/WEB-INF/view/out/main.jsp</result>
+        </action>
+        <action name="Login_openTop" class="loginAction" method="openTop">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Login_openLeft" class="loginAction" method="openLeft">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Login_openIndex" class="loginAction" method="openIndex">
+            <result name="success">${forwardView}</result>
+        </action>
+    </package>
+
+    <package name="front" extends="struts-default" namespace="/front">
+        <!--系统设置 -->
+        <action name="*_*" class="com.wzxy.science.action.front.{1}Action" method="{2}">
+            <result name="success">${forwardView}</result>
+        </action>
+    </package>
+
+    <!-- 普通操作（不纳入权限拦截的） -->
+    <package name="front1" extends="struts-default" namespace="/front1">
+        <!--系统设置 -->
+        <action name="*_*" class="com.wzxy.science.action.{1}Action" method="{2}">
+            <result name="success">${forwardView}</result>
+        </action>
+    </package>
+    <package name="acRand" extends="struts-default" namespace="/acRand">
+        <action name="*_*" class="com.wzxy.science.action.front.{1}Action"
+                method="{2}">
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">imageStream</param>
+                <param name="bufferSize">2048</param>
+            </result>
+        </action>
+    </package>
+
+    <!-- 定义系统设置模块 -->
+    <package name="biz" extends="struts-default" namespace="/biz">
+        <!--系统设置 -->
+        <action name="*_*" class="com.wzxy.science.action.{1}Action" method="{2}">
+            <result name="success">${forwardView}</result>
+            <result name="download"  type="stream">
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="contentDisposition">attachment;filename=${tbPersonalData.image}</param>
+                <param name="bufferSize">4096</param>
+            </result>
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="User_openEdit" class="userAction" method="openEdit">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="User_openAdd" class="userAction" method="openAdd">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="User_add" class="userAction" method="add">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="User_update" class="userAction" method="update">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="User_openMessage" class="userAction" method="openMessage">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="User_updateUserMessage" class="userAction" method="updateUserMessage">
+            <result name="success">${forwardView}</result>
+        </action>
+
+    </package>
+
+    <package name="role" namespace="/role" extends="struts-default">
+        <action name="*_*" class="roleAction" method="{2}">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Role_openAdd" class="roleAction" method="openAdd">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Role_openEdit" class="roleAction" method="openEdit">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Role_add" class="roleAction" method="add">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Role_update" class="roleAction" method="update">
+            <result name="success">${forwardView}</result>
+        </action>
+    </package>
+    <package name="right" namespace="/right" extends="struts-default">
+        <action name="*_*" class="rightAction" method="{2}">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Right_openEdit" class="rightAction" method="openEdit">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Right_openAdd" class="rightAction" method="openAdd">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Right_add" class="rightAction" method="add">
+            <result name="success">${forwardView}</result>
+        </action>
+        <action name="Right_update" class="rightAction" method="update">
+            <result name="success">${forwardView}</result>
         </action>
     </package>
 
